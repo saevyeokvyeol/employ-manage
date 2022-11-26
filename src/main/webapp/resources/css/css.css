@@ -1,0 +1,20 @@
+@charset "UTF-8";
+
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+* { 
+	font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+	font-weight: 400;
+}
+
+a {text-decoration: none;}
+
+#main-content-body {width: 1200px; margin: auto;}
+
+.table {margin: 50px auto 20px;}
+
+.table * {text-align: center; vertical-align: middle;}
+
+#search-box {display: inline; margin: 20px auto 50px;}
+#search-box *:nth-child(1) {width: 10%;}
+#search-box *:nth-child(2) {width: 83%;}

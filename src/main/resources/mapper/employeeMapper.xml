@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="employeeMapper">
+ 	<insert id="insertEmployee" parameterType="employee">
+ 		insert
+ 		into employee
+ 		values(employee_id_seq.nextval, #{employeeNumber}, #{employeeName}, #{employeeTel}, #{employeePosition}, #{employeeEmail}, systimestamp, systimestamp)
+ 	</insert>
+ 	
+  	<update id="updateEmployee" parameterType="employee">
+ 		update employee
+ 		<trim prefix="set" prefixOverrides=", " suffix=", employee_update_date = systimestamp">
+ 			<if test="employeeNumber != null">
+ 				employee_number = #{employeeNumber}
+ 			</if>
+ 			<if test="employeeName != null">
+ 				, employee_name = #{employeeName}
+ 			</if>
+ 			<if test="employeeTel != null">
+ 				, employee_tel = #{employeeTel}
+ 			</if>
+ 			<if test="employeePosition != null">
+ 				, employee_position = #{employeePosition}
+ 			</if>
+ 			<if test="employeeEmail != null">
+ 				, employee_email = #{employeeEmail}
+ 			</if>
+ 		</trim>
+ 		where employee_id = #{employeeId}
+ 	</update>
+ 	
+ 	<delete id="deleteEmployee" parameterType="long">
+ 		delete from employee
+ 		where employee_id = #{_parameter}
+ 	</delete>
+
+ 	<select id="findEmployees" parameterType="map" resultType="employee">
+ 		select *
+ 		from (select e.*, ROWNUM rnum
+	 		from (select *
+		 		from employee
+		 		<trim prefix="where" prefixOverrides="and">
+		 			<if test="employee.employeeNumber != null">
+		 				employee_number like '%'||#{employee.employeeNumber}||'%'
+		 			</if>
+		 			<if test="employee.employeeName != null">
+		 				employee_name like '%'||#{employee.employeeName}||'%'
+		 			</if>
+		 			<if test="employee.employeeTel != null">
+		 				employee_tel like '%'||#{employee.employeeTel}||'%'
+		 			</if>
+		 			<if test="employee.employeePosition != null">
+		 				employee_position like '%'||#{employee.employeePosition}||'%'
+		 			</if>
+		 			<if test="employee.employeeEmail != null">
+		 				employee_email like '%'||#{employee.employeeEmail}||'%'
+		 			</if>
+		 		</trim>
+		 		order by employee_name)
+		 	e)
+ 		where rnum <![CDATA[>=]]> #{start} and rnum <![CDATA[<=]]> #{end}
+ 	</select>
+
+ 	<select id="getTotalCount" parameterType="employee" resultType="integer">
+ 		select count(employee_id) from employee
+ 		<trim prefix="where" prefixOverrides="and">
+ 			<if test="employeeNumber != null">
+ 				employee_number like '%'||#{employeeNumber}||'%'
+ 			</if>
+ 			<if test="employeeName != null">
+ 				employee_name like '%'||#{employeeName}||'%'
+ 			</if>
+ 			<if test="employeeTel != null">
+ 				employee_tel like '%'||#{employeeTel}||'%'
+ 			</if>
+ 			<if test="employeePosition != null">
+ 				employee_position like '%'||#{employeePosition}||'%'
+ 			</if>
+ 			<if test="employeeEmail != null">
+ 				employee_email like '%'||#{employeeEmail}||'%'
+ 			</if>
+ 		</trim>
+ 	</select>
+
+ 	<select id="findEmployeeByEmployeeId" parameterType="long" resultType="employee">
+ 		select * from employee where employee_id = #{_parameter}
+ 	</select>
+
+ 	<select id="findEmployeeByEmployeeNumber" parameterType="string" resultType="employee">
+ 		select * from employee where employee_number = #{_parameter}
+ 	</select>
+</mapper>
